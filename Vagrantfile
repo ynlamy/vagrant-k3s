@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     vmw.gui = true
     vmw.vmx["displayName"] = "k3s"
     vmw.vmx["numvcpus"] = "2"
-    vmw.vmx["memsize"] = "2048"
+    vmw.vmx["memsize"] = "4096"
   end
 
   # Forwarded port for HTTP
