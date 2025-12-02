@@ -46,10 +46,32 @@ chown root:root /usr/local/bin/helm
 rm -fr linux-amd64
 rm -f $HELM_FILENAME
 
+echo "Installing kube-score..."
+KUBESCORE_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.com/zegl/kube-score/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+KUBESCORE_FILENAME="kube-score_${KUBESCORE_LATEST_VERSION//v/}_linux_amd64.tar.gz"
+KUBESCORE_URL="https://github.com/zegl/kube-score/releases/download/${KUBESCORE_LATEST_VERSION}/${KUBESCORE_FILENAME}"
+curl -L -s -O $KUBESCORE_URL &>/dev/null
+tar -zxf $KUBESCORE_FILENAME
+mv kube-score /usr/local/bin/
+rm -f LICENSE
+rm -f $KUBESCORE_FILENAME
+
+echo "Installing Stern..."
+STERN_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.com/stern/stern/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+STERN_FILENAME="stern_${STERN_LATEST_VERSION//v/}_linux_amd64.tar.gz"
+STERN_URL="https://github.com/stern/stern/releases/download/${STERN_LATEST_VERSION}/${STERN_FILENAME}"
+curl -L -s -O $STERN_URL &>/dev/null
+tar -zxf $STERN_FILENAME
+mv stern /usr/local/bin/
+rm -f LICENSE
+rm -f $STERN_FILENAME
+
 echo -e "\nK3s is ready !"
 echo "- K3s version :" `/usr/local/bin/k3s --version | grep -i "k3s version" | awk '{ print $3 }' | cut -d '"' -f2 | sed 's/^v//'`
 echo "- K9s version :" `k9s version | grep -i "Version" | awk '{ print $2 }' | sed 's/^v//'`
 echo "- Helm version :" `/usr/local/bin/helm version | grep -i "Version" | awk '{ print $1 }' | cut -d '"' -f2 | sed 's/^v//'`
+echo "- kube-score version :" `/usr/local/bin/kube-score version | grep -i "version" | awk '{ print $3 }' | sed 's/.$//'`
+echo "- Stern version :" `/usr/local/bin/stern --version | grep -i "version" | awk '{ print $2 }'`
 echo -e "\nInformations :"
 echo "- Guest IP address :" `ip address show eth0 | grep 'inet ' | sed -e 's/^.*inet //' -e 's/\/.*$//'`
 echo "- Ingress URL for HTTP : http://127.0.0.1/"
