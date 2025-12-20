@@ -44,6 +44,12 @@ Vagrant.configure("2") do |config|
   # Provisioning scripts
   config.vm.provision "shell", path: "provisioning.sh", env: {
     "TIMEZONE" => "Europe/Paris", # Timezone to be used by the system
-    "K3S_VERSION" => "1.32.10+k3s1" # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_VERSION" => "1.32.10+k3s1", # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K9S_INSTALL" => "true", # Install K9s or not
+    "HELM_INSTALL" => "true", # Install Helm or not
+    "HELM_REPOSITORY_NAME" => "bitnami", # Helm repository name to add (if Helm is installed)
+    "HELM_REPOSITORY_URL" => "https://charts.bitnami.com/bitnami", # Helm repository URL to add (if Helm is installed)
+    "KUBESCORE_INSTALL" => "true", # Install kube-score or not
+    "STERN_INSTALL" => "true" # Install Stern or not
   }
 end

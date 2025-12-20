@@ -21,7 +21,13 @@ The timezone and K3s version can be defined through the ``Vagrantfile``.
   # Provisioning scripts
   config.vm.provision "shell", path: "provisioning.sh", env: {
     "TIMEZONE" => "Europe/Paris", # Timezone to be used by the system
-    "K3S_VERSION" => "1.32.10+k3s1" # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_VERSION" => "1.32.10+k3s1", # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K9S_INSTALL" => "true", # Install K9s or not
+    "HELM_INSTALL" => "true", # Install Helm or not
+    "HELM_REPOSITORY_NAME" => "bitnami", # Helm repository name to add (if Helm is installed)
+    "HELM_REPOSITORY_URL" => "https://charts.bitnami.com/bitnami", # Helm repository URL to add (if Helm is installed)
+    "KUBESCORE_INSTALL" => "true", # Install kube-score or not
+    "STERN_INSTALL" => "true" # Install Stern or not
   }
   ...
 ```
@@ -39,13 +45,14 @@ This Kubernetes environment must be started using Vagrant.
     default: Installing K3s...
     default: Installing K9s...
     default: Installing Helm...
+    default: Configuring Helm repository...
     default: Installing kube-score...
     default: Installing Stern...
     default:
     default: K3s is ready !
     default: - K3s version : 1.32.10+k3s1
     default: - K9s version : 0.50.16
-    default: - Helm version : 4.0.1
+    default: - Helm version : 4.0.4
     default: - kube-score version : 1.20.0
     default: - Stern version : 1.33.1
     default:
