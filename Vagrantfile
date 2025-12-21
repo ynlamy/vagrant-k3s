@@ -49,6 +49,7 @@ Vagrant.configure("2") do |config|
     "HELM_INSTALL" => "true", # Install Helm or not
     "HELM_REPOSITORY_NAME" => "bitnami", # Helm repository name to add (if Helm is installed)
     "HELM_REPOSITORY_URL" => "https://charts.bitnami.com/bitnami", # Helm repository URL to add (if Helm is installed)
+    "KUBENS_INSTALL" => "true", # Install kubens or not
     "KUBESCORE_INSTALL" => "true", # Install kube-score or not
     "STERN_INSTALL" => "true" # Install Stern or not
   }

@@ -6,6 +6,7 @@ This Kubernetes environment is based on a [Rocky Linux 9](https://rockylinux.org
 * [K3s](https://k3s.io/) is a lightweight Kubernetes cluster (a single node is installed)
 * [K9s](https://k9scli.io/) is a terminal based UI to interact with your Kubernetes cluster
 * [Helm](https://helm.sh/) is a package manager for managing Kubernetes applications
+* [kubens](https://github.com/ahmetb/kubectx/) is a tool to switch between Kubernetes namespaces easily
 * [kube-score](https://github.com/zegl/kube-score/) is a tool that performs static code analysis of your Kubernetes object definitions
 * [Stern](https://github.com/stern/stern/) allows you to tail multiple pods on Kubernetes and multiple containers within the pod
 
@@ -26,6 +27,7 @@ The timezone and K3s version can be defined through the ``Vagrantfile``.
     "HELM_INSTALL" => "true", # Install Helm or not
     "HELM_REPOSITORY_NAME" => "bitnami", # Helm repository name to add (if Helm is installed)
     "HELM_REPOSITORY_URL" => "https://charts.bitnami.com/bitnami", # Helm repository URL to add (if Helm is installed)
+    "KUBENS_INSTALL" => "true", # Install kubens or not
     "KUBESCORE_INSTALL" => "true", # Install kube-score or not
     "STERN_INSTALL" => "true" # Install Stern or not
   }
@@ -46,6 +48,7 @@ This Kubernetes environment must be started using Vagrant.
     default: Installing K9s...
     default: Installing Helm...
     default: Configuring Helm repository...
+    default: Installing kubens...
     default: Installing kube-score...
     default: Installing Stern...
     default:
@@ -53,6 +56,7 @@ This Kubernetes environment must be started using Vagrant.
     default: - K3s version : 1.32.10+k3s1
     default: - K9s version : 0.50.16
     default: - Helm version : 4.0.4
+    default: - kubens : 0.9.5
     default: - kube-score version : 1.20.0
     default: - Stern version : 1.33.1
     default:

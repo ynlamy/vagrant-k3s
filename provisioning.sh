@@ -40,6 +40,16 @@ chown vagrant:vagrant /home/vagrant/.kube/config
 /usr/local/bin/k3s kubectl completion bash > /etc/bash_completion.d/kubectl
 echo "alias k=kubectl" > /etc/profile.d/kubectl-aliases.sh
 echo "complete -o default -F __start_kubectl k" >> /etc/profile.d/kubectl-aliases.sh
+echo '#!/bin/bash
+
+function k8s_ps1() {
+  namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+  if [ -z "$namespace" ]; then
+    namespace="default"
+  fi
+  echo $namespace
+}
+export PS1="[\u@\h (\$(k8s_ps1)) \W]\$ "' > /etc/profile.d/k8s-prompt.sh
 
 if [ "$K9S_INSTALL" = true ]; then
   echo "Installing K9s..."
@@ -75,6 +85,20 @@ if [ "$HELM_INSTALL" = true ]; then
   fi
 fi
 
+if [ "$KUBENS_INSTALL" = true ]; then
+  echo "Installing kubens..."
+  KUBENS_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.com/ahmetb/kubectx/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+  KUBENS_FILENAME="kubens_${KUBENS_LATEST_VERSION}_linux_x86_64.tar.gz"
+  KUBENS_URL="https://github.com/ahmetb/kubectx/releases/download/${KUBENS_LATEST_VERSION}/${KUBENS_FILENAME}"
+  curl -L -s -O $KUBENS_URL &>/dev/null
+  tar -zxf $KUBENS_FILENAME
+  mv kubens /usr/local/bin/
+  rm -f LICENSE
+  rm -f $KUBENS_FILENAME
+  curl -L -s -O https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash
+  mv kubens.bash /etc/bash_completion.d/kubens
+fi
+
 if [ "$KUBESCORE_INSTALL" = true ]; then
   echo "Installing kube-score..."
   KUBESCORE_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.com/zegl/kube-score/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
@@ -106,6 +130,9 @@ if [ "$K9S_INSTALL" = true ]; then
 fi
 if [ "$HELM_INSTALL" = true ]; then
   echo "- Helm version :" `/usr/local/bin/helm version | grep -i "Version" | awk '{ print $1 }' | cut -d '"' -f2 | sed 's/^v//'`
+fi
+if [ "$KUBENS_INSTALL" = true ]; then
+  echo "- kubens version :" `/usr/local/bin/kubens --version`
 fi
 if [ "$KUBESCORE_INSTALL" = true ]; then
   echo "- kube-score version :" `/usr/local/bin/kube-score version | grep -i "version" | awk '{ print $3 }' | sed 's/.$//'`
