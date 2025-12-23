@@ -40,16 +40,20 @@ chown vagrant:vagrant /home/vagrant/.kube/config
 /usr/local/bin/k3s kubectl completion bash > /etc/bash_completion.d/kubectl
 echo "alias k=kubectl" > /etc/profile.d/kubectl-aliases.sh
 echo "complete -o default -F __start_kubectl k" >> /etc/profile.d/kubectl-aliases.sh
-echo '#!/bin/bash
 
-function k8s_ps1() {
-  namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
-  if [ -z "$namespace" ]; then
-    namespace="default"
-  fi
-  echo $namespace
-}
-export PS1="[\u@\h (\$(k8s_ps1)) \W]\$ "' > /etc/profile.d/k8s-prompt.sh
+if [ "$PROMPT_CUSTOM" = true ]; then
+  echo "Customizing the prompt..."
+  echo '#!/bin/bash
+
+  function k8s_ps1() {
+    namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+    if [ -z "$namespace" ]; then
+      namespace="default"
+    fi
+    echo $namespace
+  }
+  export PS1="[\u@\h (\$(k8s_ps1)) \W]\$ "' > /etc/profile.d/k8s-prompt.sh
+fi
 
 if [ "$K9S_INSTALL" = true ]; then
   echo "Installing K9s..."
