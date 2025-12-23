@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "provisioning.sh", env: {
     "TIMEZONE" => "Europe/Paris", # Timezone to be used by the system
     "K3S_VERSION" => "1.32.10+k3s1", # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
-    "PROMPT_CUSTOM" => "true", # Customize the prompt with the namespace or not
+    "PROMPT_CUSTOM" => "true", # Customize the prompt with the current namespace or not
     "K9S_INSTALL" => "true", # Install K9s or not
     "HELM_INSTALL" => "true", # Install Helm or not
     "HELM_REPOSITORY_NAME" => "bitnami", # Helm repository name to add (if Helm is installed)
