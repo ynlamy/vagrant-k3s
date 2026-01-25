@@ -14,6 +14,13 @@ echo "Disbaling SELinux..."
 setenforce 0
 sed -i 's/SELINUX=\(enforcing\|permissive\)/SELINUX=disabled/' /etc/selinux/config
 
+if [ "$(firewall-cmd --state)" = "running" ]; then
+  echo "Adding firewalld rules..."
+  firewall-cmd --zone=public --permanent --add-service=http --quiet
+  firewall-cmd --zone=public --permanent --add-service=https --quiet
+  firewall-cmd --reload --quiet
+fi
+
 if [ -n "$TIMEZONE" ]; then
   echo "Configuring Timezone..."
   timedatectl set-timezone $TIMEZONE
