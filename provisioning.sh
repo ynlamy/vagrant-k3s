@@ -15,10 +15,8 @@ setenforce 0
 sed -i 's/SELINUX=\(enforcing\|permissive\)/SELINUX=disabled/' /etc/selinux/config
 
 if [ "$(firewall-cmd --state)" = "running" ]; then
-  echo "Adding firewalld rules..."
-  firewall-cmd --zone=public --permanent --add-service=http --quiet
-  firewall-cmd --zone=public --permanent --add-service=https --quiet
-  firewall-cmd --reload --quiet
+  echo "Disabling firewalld..."
+  systemctl disable --now firewalld
 fi
 
 if [ -n "$TIMEZONE" ]; then
