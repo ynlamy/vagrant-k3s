@@ -46,6 +46,23 @@ chown vagrant:vagrant /home/vagrant/.kube/config
 echo "alias k=kubectl" > /etc/profile.d/kubectl-aliases.sh
 echo "complete -o default -F __start_kubectl k" >> /etc/profile.d/kubectl-aliases.sh
 
+if [ "$K3S_GATEWAY_API" = true ]; then
+  mkdir -p /var/lib/rancher/k3s/server/manifests/
+  cat <<EOF > /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    providers:
+      kubernetesGateway:
+        enabled: true
+EOF
+  chmod 600 /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+fi
+
 if [ "$PROMPT_CUSTOM" = true ]; then
   echo "Customizing the prompt..."
   echo '#!/bin/bash

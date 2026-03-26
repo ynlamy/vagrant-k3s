@@ -22,7 +22,8 @@ The timezone and K3s version can be defined through the ``Vagrantfile``.
   # Provisioning scripts
   config.vm.provision "shell", path: "provisioning.sh", env: {
     "TIMEZONE" => "Europe/Paris", # Timezone to be used by the system
-    "K3S_VERSION" => "1.32.10+k3s1", # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_VERSION" => "1.34.5+k3s1", # K3s version to install (v1.35.2+k3s1, v1.34.5+k3s1, 1.33.9+k3s1, 1.32.13+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_GATEWAY_API" => "true", # Enable Kubernetes Gateway API with Traefik or not
     "PROMPT_CUSTOM" => "true", # Customize the prompt with the current namespace or not
     "K9S_INSTALL" => "true", # Install K9s or not
     "HELM_INSTALL" => "true", # Install Helm or not
@@ -56,10 +57,10 @@ This Kubernetes environment must be started using Vagrant.
     default: Installing Stern...
     default:
     default: K3s is ready !
-    default: - K3s version : 1.32.10+k3s1
+    default: - K3s version : 1.34.5+k3s1
     default: - K9s version : 0.50.18
-    default: - Helm version : 4.1.0
-    default: - kubens : 0.9.5
+    default: - Helm version : 4.1.3
+    default: - kubens : 0.10.2
     default: - kube-score version : 1.20.0
     default: - Stern version : 1.33.1
     default:

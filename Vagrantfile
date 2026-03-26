@@ -46,7 +46,8 @@ Vagrant.configure("2") do |config|
   # Provisioning scripts
   config.vm.provision "shell", path: "provisioning.sh", env: {
     "TIMEZONE" => "Europe/Paris", # Timezone to be used by the system
-    "K3S_VERSION" => "1.32.10+k3s1", # K3s version to install (v1.34.2+k3s1, 1.33.6+k3s1, 1.32.10+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_VERSION" => "1.34.5+k3s1", # K3s version to install (v1.35.2+k3s1, v1.34.5+k3s1, 1.33.9+k3s1, 1.32.13+k3s1, ...) : https://github.com/k3s-io/k3s/releases
+    "K3S_GATEWAY_API" => "true", # Enable Kubernetes Gateway API with Traefik or not
     "PROMPT_CUSTOM" => "true", # Customize the prompt with the current namespace or not
     "K9S_INSTALL" => "true", # Install K9s or not
     "HELM_INSTALL" => "true", # Install Helm or not
